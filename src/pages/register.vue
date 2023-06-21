@@ -31,7 +31,7 @@ function isValidEmail(email) {
 }
 
 async function registerForm() {
-  if (username.value === "" || email.value === "" || password.value === "") {
+  if (username.value.trim() === "" || email.value.trim() === "" || password.value.trim() === "") {
     $toast.info("Fill all Fields");
     return;
   }
