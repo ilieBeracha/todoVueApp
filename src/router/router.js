@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
+
 import LandingPage from "../pages/LandingPage.vue";
 import Home from "../pages/Home.vue";
 import AddTodo from '../pages/AddTodo.vue'
