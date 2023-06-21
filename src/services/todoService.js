@@ -7,7 +7,7 @@ class TodoService {
 
   async addTodo(title, description, status, date, label) {
     const results = await axios.post(
-      `${import.meta.env.VITE_VUE_APP_BASE_URL}/addTodo`,
+      `https://todovueserver-bba87754e80e.herokuapp.com/addTodo`,
       {
         title,
         description,
@@ -27,7 +27,7 @@ class TodoService {
   async getTodosByUser(status) {
     const token = localStorage.getItem("vuetoken");
     const results = await axios.get(
-      `${import.meta.env.VITE_VUE_APP_BASE_URL}/getTodos?status=${status}`,
+      `https://todovueserver-bba87754e80e.herokuapp.com/getTodos?status=${status}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ class TodoService {
 
   async deleteTodo(id) {
     const results = await axios.delete(
-      `${import.meta.env.VITE_VUE_APP_BASE_URL}/deleteTodo?id=${id}`
+      `https://todovueserver-bba87754e80e.herokuapp.com/deleteTodo?id=${id}`
     );
     return results.data;
   }

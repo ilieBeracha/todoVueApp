@@ -3,7 +3,7 @@ import axios from "axios";
 class UserService {
   async registerUser(username, email, password) {
     try {
-      const response = axios.post("http://127.0.0.1:3090/register", {
+      const response = axios.post("https://todovueserver-bba87754e80e.herokuapp.com/register", {
         username,
         email,
         password,
@@ -18,7 +18,7 @@ class UserService {
 
   async loginUser(email, password) {
     try {
-      const response = axios.post("http://127.0.0.1:3090/login", {
+      const response = axios.post("https://todovueserver-bba87754e80e.herokuapp.com/login", {
         email,
         password,
       });
