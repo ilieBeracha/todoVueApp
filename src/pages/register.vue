@@ -12,6 +12,7 @@
     </div>
 </template>
 
+
 <script setup>
 import { ref } from 'vue';
 import { useStore } from 'vuex';
@@ -19,31 +20,47 @@ import { userService } from '../services/userService';
 import { useToast } from 'vue-toast-notification';
 
 const $toast = useToast();
-const username = ref("")
-const email = ref("")
-const password = ref("")
+const username = ref("");
+const email = ref("");
+const password = ref("");
 const store = useStore();
 
-
-async function registerForm() {
-    if(username.value==="" || email.value==="" || password.value==="") {
-        $toast.info("Fill all Fields")
-        return;
-    }
-    const res = await userService.registerUser(username.value, email.value, password.value);
-    
-    if (res === 0) {
-        $toast.error('Error occured')
-        return
-    } else if(res.error){
-        $toast.error(res.error)
-    }else {
-        store.dispatch("saveToken", res);
-        location.reload()
-    }
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
+async function registerForm() {
+  if (username.value === "" || email.value === "" || password.value === "") {
+    $toast.info("Fill all Fields");
+    return;
+  }
+
+  if (!isValidEmail(email.value)) {
+    $toast.error("Invalid email address");
+    return;
+  }
+
+  if (password.value.length < 6) {
+    $toast.error("Password should be at least 6 characters long");
+    return;
+  }
+
+  const res = await userService.registerUser(username.value, email.value, password.value);
+
+  if (res === 0) {
+    $toast.error('Error occurred');
+    return;
+  } else if (res.error) {
+    $toast.error(res.error);
+  } else {
+    store.dispatch("saveToken", res);
+    location.reload();
+  }
+}
 </script>
+
+
 
 <style  scoped>
 .register {

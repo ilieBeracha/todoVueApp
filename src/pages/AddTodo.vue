@@ -48,10 +48,9 @@ onMounted(() => {
 const labelNames = computed(() => labels.value.map(label => label.labelName))
 
 async function addTodoDef() {
-    console.log(label)
-    if (title.value === "" || description.value === "" || status.value === "" || date.value === "" || label.value === "") {
-        $toast.info('All fields must be completed')
-        return
+    if (title.value.trim() === "" || description.value.trim() === "" || status.value.trim() === "" || date.value.trim() === "" || label.value.trim() === "") {
+        $toast.info('All fields must be completed');
+        return;
     }
 
     const res = await todoService.addTodo(title.value, description.value, status.value, date.value, label.value);
