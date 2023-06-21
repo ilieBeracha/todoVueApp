@@ -10,19 +10,19 @@
             <input type="date" v-model="date" required>
             <div class="checkboxLabelsDiv">
                 <label for="">Labels (choose or create)</label>
-                <input type="checkbox" @change="isNewLabel = !isNewLabel">
+                <input type="checkbox" v-model="isNewLabel">
             </div>
-            <v-select label="Select" v-if="!isNewLabel" v-model="label" :items="labelNames">
+            <v-select label="Select" v-if="!isNewLabel || labels.length > 0" v-model="label" :items="labelNames">
             </v-select>
             <input type="text" v-else placeholder="Write new label" v-model="label">
             <label for="">Status</label>
             <v-select label="Select" v-model="status" :items="['Active', 'In progress', 'Completed']"></v-select>
             <button @click.prevent="addTodoDef">Add</button>
-
         </form>
     </div>
 </template>
-
+  
+  
 <script setup>
 import { onMounted, ref, computed } from 'vue';
 import { todoService } from '../services/todoService';
@@ -31,47 +31,51 @@ import router from '../router/router';
 
 const $toast = useToast();
 
-const title = ref("")
-const description = ref("")
-const status = ref("")
-const date = ref("")
-const isNewLabel = ref(false)
-const labels = ref([])
-const label = ref("")
+const title = ref("");
+const description = ref("");
+const status = ref("");
+const date = ref("");
+const isNewLabel = ref(false);
+const labels = ref([]);
+const label = ref("");
 
 onMounted(() => {
     todoService.getTodosByUser("Active").then((res) => {
-        labels.value = res.labels
-    })
-})
+        labels.value = res.labels;
+        isNewLabel.value = labels.value.length === 0;
+    });
+});
 
-const labelNames = computed(() => labels.value.map(label => label.labelName))
+const labelNames = computed(() => Array.from(labels.value).map(label => label.labelName));
 
 async function addTodoDef() {
-    console.log(label)
-    if (title.value === "" || description.value === "" || status.value === "" || date.value === "", label.value === 0) {
-        $toast.info('All fields must be completed')
-        return
+    if (title.value === "" || description.value === "" || status.value === "" || date.value === "") {
+        $toast.info('All fields must be completed');
+        return;
     }
 
-    const res = await todoService.addTodo(title.value, description.value, status.value, date.value, label.value);
+    const res = await todoService.addTodo(
+        title.value,
+        description.value,
+        status.value,
+        date.value,
+        label.value
+    );
 
     if (res.status === 200) {
-        $toast.success('Todo added')
+        $toast.success('Todo added');
         title.value = "";
         description.value = "";
         status.value = "";
         date.value = "";
         label.value = "";
         router.push('/home');
-
     } else {
-        $toast.error('Error')
+        $toast.error('Error');
     }
 }
-
 </script>
-
+  
 <style scoped>
 .addTodo {
     width: 100%;
@@ -94,7 +98,6 @@ label {
     font-size: 14px;
 }
 
-
 input {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -111,7 +114,6 @@ button {
     cursor: pointer;
 }
 
-
 .checkboxLabelsDiv {
     display: flex;
     justify-content: space-between;
@@ -119,3 +121,4 @@ button {
     width: 100%;
 }
 </style>
+  
