@@ -49,7 +49,7 @@ const labelNames = computed(() => labels.value.map(label => label.labelName))
 
 async function addTodoDef() {
     console.log(label)
-    if (title.value === "" || description.value === "" || status.value === "" || date.value === "", label.value === 0) {
+    if (title.value === "" || description.value === "" || status.value === "" || date.value === "" || label.value === "") {
         $toast.info('All fields must be completed')
         return
     }
