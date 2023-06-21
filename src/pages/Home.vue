@@ -60,19 +60,19 @@ function deleteTodo(id) {
 
 function filterByLabel(label) {
   selectedLabel.value = label.id
-  todos.value = originalTodos.value.filter((todo) => todo.labelId === selectedLabel.value)
+  todos.value = originalTodos.value.filter((todo) => todo.labelId === selectedLabel.value && todo.status === tab.value)
 }
 
-function fetchTodosByTab(tab) {
-  todoService.getTodosByUser(tab).then((res) => {
+function fetchTodosByTab() {
+  todoService.getTodosByUser().then((res) => {
     originalTodos.value = res.todos;
-    todos.value = [...originalTodos.value];
+    todos.value = originalTodos.value.filter((todo)=> todo.status === tab.value)
     labels.value = res.labels
   });
 }
 
 function clearFilters() {
-  todos.value = [...originalTodos.value];
+  todos.value = originalTodos.value.filter((todo) => todo.status === tab.value)
   selectedLabel.value = 0;
 }
 
